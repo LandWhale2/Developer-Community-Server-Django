@@ -51,6 +51,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'devel.urls'
+#url 분석시에 가장 먼저 봐야할곳
 
 TEMPLATES = [
     {
