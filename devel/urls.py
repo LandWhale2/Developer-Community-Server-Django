@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url,include
+
+
 
 urlpatterns = [
     #include 로인해서 polls 로 시작하는 url은 모두 polls 어플 내의 url에서 처리하게해줌
-    path('admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
+    url(r'^bbs/', include('bbs.urls')),
 ]
