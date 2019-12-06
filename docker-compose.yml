@@ -2,20 +2,57 @@ version: '3'
 
 services:
   db:
-    image: mysql
-    ports:
-      - '3306:3306'
-    environment:
-       MYSQL_DATABASE: 'devel_db'
-       MYSQL_USER: 'devel_db'
-       MYSQL_PASSWORD: 'myroot'
-       MYSQL_ROOT_PASSWORD: 'myroot'
-  web:
-    build: .
-    command: python manage.py runserver
+    image: postgres
     volumes:
-      - .:/code
+      - ./docker/data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=sampledb
+      - POSTGRES_USER=sampleuser
+      - POSTGRES_PASSWORD=samplesecret
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+
+  django:
+    build: .
+    environment:
+      - DJANGO_DEBUG=True
+      - DJANGO_DB_HOST=db
+      - DJANGO_DB_PORT=5432
+      - DJANGO_DB_NAME=sampledb
+      - DJANGO_DB_USERNAME=sampleuser
+      - DJANGO_DB_PASSWORD=samplesecret
+      - DJANGO_SECRET_KEY=dev_secret_key
     ports:
       - "8000:8000"
-    depends_on:
-      - db
+    command:
+      - python3
+      - manage.py
+      - runserver
+      # - python3 manage.py runserver
+    volumes:
+      - .:/code
+
+
+
+#       version: '3'
+
+# services:
+#   db:
+#     image: mysql:5.7
+#     ports:
+#       - '3306:3306'
+#     environment:
+#        MYSQL_DATABASE: 'devel_db'
+#        MYSQL_USER: 'devel_db'
+#        MYSQL_PASSWORD: 'myroot'
+#        MYSQL_ROOT_PASSWORD: 'myroot'
+#   web:
+#     build: .
+#     command: python3 manage.py runserver
+#     volumes:
+      
+#     ports:
+#       - "8000:8000"
+#     depends_on:
+#       - db
+
+

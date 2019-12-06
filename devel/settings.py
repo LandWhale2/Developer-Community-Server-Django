@@ -82,12 +82,12 @@ WSGI_APPLICATION = 'devel.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'devel_db',
-        'USER': 'root',
-        'PASSWORD' : 'myroot',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'sampledb',
+        'USER': 'sampleuser',
+        'PASSWORD' : 'samplesecret',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
