@@ -9,7 +9,6 @@ jmespath==0.9.4
 lazy-object-proxy==1.4.2
 mccabe==0.6.1
 pbr==5.4.3
-psycopg2==2.7.7
 pyasn1==0.4.8
 pylint==2.3.1
 pymongo==3.9.0
@@ -25,3 +24,4 @@ virtualenv==16.7.5
 virtualenv-clone==0.5.3
 virtualenvwrapper==4.8.4
 wrapt==1.11.2
+# psycopg2==2.7.7
