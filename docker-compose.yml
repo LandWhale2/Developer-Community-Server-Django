@@ -5,22 +5,9 @@ services:
     image: postgres
     volumes:
       - ./docker/data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=sampledb
-      - POSTGRES_USER=sampleuser
-      - POSTGRES_PASSWORD=samplesecret
-      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
 
   django:
     build: .
-    environment:
-      - DJANGO_DEBUG=True
-      - DJANGO_DB_HOST=db
-      - DJANGO_DB_PORT=5432
-      - DJANGO_DB_NAME=sampledb
-      - DJANGO_DB_USERNAME=sampleuser
-      - DJANGO_DB_PASSWORD=samplesecret
-      - DJANGO_SECRET_KEY=dev_secret_key
     ports:
       - "8000:8000"
     command:
@@ -30,6 +17,8 @@ services:
       # - python3 manage.py runserver
     volumes:
       - .:/code
+    depends_on:
+      - db
 
 
 
