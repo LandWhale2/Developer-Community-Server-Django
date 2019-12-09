@@ -17,4 +17,5 @@ WORKDIR /code
 COPY requirements.txt /code/
 RUN pip3 install -r requirements.txt
 COPY . /code/
-RUN source develvenv/bin/activate
+# RUN /bin/bash -c "source develvenv/bin/activate"
+CMD source develvenv/bin/activate
