@@ -3,9 +3,6 @@ version: '3'
 services:
   db:
     image: postgres
-    volumes:
-      - ./docker/data:/var/lib/postgresql/data
-
   django:
     build: .
     ports:
