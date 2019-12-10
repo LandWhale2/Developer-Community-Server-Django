@@ -1,15 +1,12 @@
 from rest_framework import serializers
-from posts.models import Posts
+from . import models
 
 class PostsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Posts
+        model = models.Talk
         fields = ('id', 'content')
 
-    def create(self, validated_data):
-        return Posts.objects.create(**validated_data)
-
-    def update(self, instance, validated_data):
-        instance.content = validated_data.get('content', instance.content)
-        instance.save()
-        return instance
+class TalkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Talk
+        fields = ('id', 'content', 'title')

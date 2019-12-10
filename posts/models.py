@@ -8,4 +8,17 @@ class Posts(models.Model):
     content = models.TextField()
 
     class Meta:
-        ordering = ('created',)
+        abstract = True
+
+
+class Talk(Posts):
+    title = "Talk"
+
+class Projects(Posts):
+    title = "Projects"
+
+# class Algorithm(Posts):
+#     title = "Algorithm"
+
+# class Algorithm(Posts):
+#     title = "Algorithm"

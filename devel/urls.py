@@ -16,13 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url,include
+from .api import router
 
 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^talk/', include('posts.urls')),
-    url(r'^algorithm/', include('posts.urls')),
-    url(r'^projects/', include('posts.urls')),
-    url(r'^skilltalk/', include('posts.urls')),
+    url(r'^api/', include(router.urls)),
 ]

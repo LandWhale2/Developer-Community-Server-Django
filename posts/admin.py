@@ -1,10 +1,10 @@
 from django.contrib import admin
-from posts.models import Posts
+from .models import Talk
 # Register your models here.
 
-class PostsAdmin(admin.ModelAdmin):
+class TalkAdmin(admin.ModelAdmin):
     list_display = ('created',)
 
 
-admin.site.register(Posts, PostsAdmin)
+admin.site.register(Talk, TalkAdmin)
 
