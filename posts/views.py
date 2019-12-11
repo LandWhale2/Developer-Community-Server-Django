@@ -5,19 +5,22 @@ from rest_framework import viewsets
 
 # Create your views here.
 
-
+#글 전용 뷰셋
 class TalkViewset(viewsets.ModelViewSet):
     queryset = models.Talk.objects.all()
     serializer_class = serializers.TalkSerializer
 
 class ProjectViewset(viewsets.ModelViewSet):
     queryset = models.Projects.objects.all()
-    serializer_class = serializers.TalkSerializer
+    serializer_class = serializers.ProjectSerializer
 
-# class ProjectsViewset(viewsets.GenericViewSet):
-#     queryset = models.Posts.objects.all()
-#     serializer_class = serializers.ProjectsSerializer
+class AlgorithmViewset(viewsets.ModelViewSet):
+    queryset = models.Algorithm.objects.all()
+    serializer_class = serializers.AlgorithmSerializer
 
+class SkilltalkViewset(viewsets.ModelViewSet):
+    queryset = models.Skilltalk.objects.all()
+    serializer_class = serializers.SkilltalkSerializer
 
 # class PostsDetail(generics.RetrieveUpdateDestroyAPIView):
 #     queryset = Posts.objects.all()
