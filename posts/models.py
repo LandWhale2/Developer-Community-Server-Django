@@ -3,6 +3,8 @@ from django.db import models
 # Create your models here.
 
 
+
+
 # 글 전용 모델들
 
 class Posts(models.Model):
