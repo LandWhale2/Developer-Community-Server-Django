@@ -16,6 +16,7 @@ class SkilltalkAdmin(admin.ModelAdmin):
     list_display = ('created',)
 
 
+
 admin.site.register(Talk, TalkAdmin)
 admin.site.register(Projects, ProjectAdmin)
 admin.site.register(Algorithm, AlgorithmAdmin)
