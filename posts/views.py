@@ -22,7 +22,7 @@ class SkilltalkViewset(viewsets.ModelViewSet):
     queryset = models.Skilltalk.objects.all()
     serializer_class = serializers.SkilltalkSerializer
 
-# class PostsDetail(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Posts.objects.all()
-#     serializer_class = PostsSerializer
+#홈
 
+def index(request):
+    return render(request, 'index.html')

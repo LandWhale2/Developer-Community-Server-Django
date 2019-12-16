@@ -18,6 +18,7 @@ from django.urls import path
 from django.conf.urls import url,include
 from .api import router
 from users import urls
+from posts import views
 
 
 
@@ -25,4 +26,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
     path('auth/', include('users.urls')),
+    path('', views.index),
 ]
