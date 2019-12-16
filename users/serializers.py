@@ -6,11 +6,12 @@ from django.template.loader import render_to_string
 from rest_framework import serializers
 from .models import User
 from .tokens import account_activation_token
+import datetime
 
 
 class UserSerializer(serializers.ModelSerializer):
-    created_by = serializers.CharField(max_length=64, required=False)
-    updated_by = serializers.CharField(max_length=64, required=False)
+    # created_by = serializers.CharField(max_length=64, required=False)
+    # updated_by = serializers.CharField(max_length=64, required=False)
     email = serializers.EmailField()
 
     class Meta:
@@ -29,6 +30,7 @@ class UserSerializer(serializers.ModelSerializer):
     def to_representation(self, obj):
         #GET/POST/Put 과 같이 데이터 변경이있고 그이후 data로 접근할떄 값을 변환하여 보여줍니다
         ret = super(UserSerializer, self).to_representation(obj)
+        print(ret)
         return ret
     
     def validate_email(self, value):

@@ -22,6 +22,14 @@ class SignUp(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class SignIn(APIView):
+    def post(self, request):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class UserActivate(APIView):
     permission_classes = (permissions.AllowAny,)
 
@@ -34,6 +42,7 @@ class UserActivate(APIView):
         try:
             if user is not None and account_activation_token.check_token(user, token):
                 user.active = True
+                user.token = token
                 user.save()
                 return Response(user.email + '계정이 활성화되었습니다', status=status.HTTP_200_OK)
             else:
