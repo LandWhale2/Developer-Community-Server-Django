@@ -6,19 +6,19 @@ from . import models
 class TalkSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Talk
-        fields = ('id', 'content', 'title', 'created')
+        fields = '__all__'
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Projects
-        fields = ('id', 'content', 'title', 'created')
+        fields = '__all__'
 
 class AlgorithmSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Algorithm
-        fields = ('id', 'content', 'title', 'created')
+        fields = '__all__'
 
 class SkilltalkSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Skilltalk
-        fields = ('id', 'content', 'title', 'created')
+        fields = '__all__'
