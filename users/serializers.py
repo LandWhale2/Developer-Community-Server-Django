@@ -7,6 +7,8 @@ from rest_framework import serializers
 from .models import User
 from .tokens import account_activation_token
 import datetime
+from django.contrib.auth import authenticate
+
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -47,10 +49,11 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validate_data):
         #데이터 저장할때 필요한 과정을 구현합니다
-        user = User.objects.create(
+        user = User.objects.create_user(
             email = validate_data['email'],
             password = validate_data['password'],
         )
+        
         user.active = False
         user.save()
 
@@ -70,4 +73,10 @@ class UserSerializer(serializers.ModelSerializer):
 
         return validate_data
 
+
+
+# class LoginSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = '__all__'
     
