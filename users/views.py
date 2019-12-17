@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from .serializers import UserSerializer
+from .serializers import UserSerializer, LoginSerializer
 from django.http import HttpResponse
 from rest_framework import status, permissions
+from rest_framework.permissions import AllowAny
 from django.views import View
 from django.utils.encoding import force_text
 from rest_framework.views import APIView
@@ -10,6 +11,8 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import account_activation_token
 from .models import User
 import traceback
+from rest_framework import viewsets
+
 # Create your views here.
 
 
@@ -23,11 +26,25 @@ class SignUp(APIView):
 
 
 class SignIn(APIView):
+    permission_classes = (AllowAny,)
+
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        email = request.data.get('email', None)
+        password = request.data.get('password', None)
+        if email and password:
+            user_obj = User.objects.get(email = email, password= password)
+            print(user_obj)
+            if user_obj:
+                user = LoginSerializer(user_obj)
+                data_list = {}
+                data_list.update(user.data)
+                return Response({"message": "로그인 성공", "data": data_list, "code": 200})
+            else:
+                message = "로그인 실패"
+                return Response({"message": message, "code": 500, "data": {}})
+        else:
+            message = "올바르지않은 입력"
+            return Response({"message": message, "code": 500, "data": {}})
 
 
 class UserActivate(APIView):

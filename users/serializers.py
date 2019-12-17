@@ -32,7 +32,6 @@ class UserSerializer(serializers.ModelSerializer):
     def to_representation(self, obj):
         #GET/POST/Put 과 같이 데이터 변경이있고 그이후 data로 접근할떄 값을 변환하여 보여줍니다
         ret = super(UserSerializer, self).to_representation(obj)
-        print(ret)
         return ret
     
     def validate_email(self, value):
@@ -49,10 +48,12 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validate_data):
         #데이터 저장할때 필요한 과정을 구현합니다
-        user = User.objects.create_user(
+        user = User.objects.create(
             email = validate_data['email'],
             password = validate_data['password'],
+            nickname = validate_data['nickname'],
         )
+        
         
         user.active = False
         user.save()
@@ -75,8 +76,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 
-# class LoginSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = '__all__'
-    
+class LoginSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'
+        
