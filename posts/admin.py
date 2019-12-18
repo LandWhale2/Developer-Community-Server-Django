@@ -4,16 +4,16 @@ from .models import Talk, Projects, Algorithm, Skilltalk
 # Register your models here.
 
 class TalkAdmin(admin.ModelAdmin):
-    list_display = ('created',)
+    list_display = ('content',)
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('created',)
+    list_display = ('content',)
 
 class AlgorithmAdmin(admin.ModelAdmin):
-    list_display = ('created',)
+    list_display = ('content',)
 
 class SkilltalkAdmin(admin.ModelAdmin):
-    list_display = ('created',)
+    list_display = ('content',)
 
 
 

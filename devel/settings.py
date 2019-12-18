@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'posts',
     'users',
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -131,6 +132,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+
+#이메일 전송
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
@@ -139,3 +143,20 @@ EMAIL_HOST_USER = 'hostlandwhale@gmail.com'
 EMAIL_HOST_PASSWORD = 'gurwls87900'
 SERVER_EMAIL = 'hostlandwhale@gmail.com'
 DEFAULT_FROM_MAIL = 'hostlandwhale'
+
+
+
+# # S3 Storage
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# # AWS Access
+# AWS_ACCESS_KEY_ID = 'AKIATAKXX3QHR62OKAA5'
+# AWS_SECRET_ACCESS_KEY = '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'
+# AWS_STORAGE_BUCKET_NAME = 'developercommunityapp'
+
+# #static
+# STATIC_DIR = os.path.join(BASE_DIR, 'static')
+# STATICFILES_DIRS = [
+#     STATIC_DIR,
+# ]
