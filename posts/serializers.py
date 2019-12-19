@@ -3,25 +3,29 @@ from . import models
 
 #글 게시물serializer
 
-class TalkSerializer(serializers.ModelSerializer):
+class TalkSerializer(serializers.HyperlinkedModelSerializer):
+    image = serializers.ImageField(use_url = True, required=False)
     class Meta:
         model = models.Talk
-        fields = '__all__'
+        fields = ('content','image', 'title', 'created', 'writer', 'id')
 
-class ProjectSerializer(serializers.ModelSerializer):
+class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+    image = serializers.ImageField(use_url = True, required=False)
     class Meta:
         model = models.Projects
-        fields = '__all__'
+        fields = ('content','image', 'title', 'created', 'writer', 'id')
 
-class AlgorithmSerializer(serializers.ModelSerializer):
+class AlgorithmSerializer(serializers.HyperlinkedModelSerializer):
+    image = serializers.ImageField(use_url = True, required=False)
     class Meta:
         model = models.Algorithm
-        fields = '__all__'
+        fields = ('content','image', 'title', 'created', 'writer', 'id')
 
-class SkilltalkSerializer(serializers.ModelSerializer):
+class SkilltalkSerializer(serializers.HyperlinkedModelSerializer):
+    image = serializers.ImageField(use_url = True, required=False)
     class Meta:
         model = models.Skilltalk
-        fields = '__all__'
+        fields = ('content','image', 'title', 'created', 'writer', 'id')
 
 
 #댓글 serializer

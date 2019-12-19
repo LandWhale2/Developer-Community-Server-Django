@@ -12,6 +12,7 @@ class Posts(models.Model):
     content = models.CharField(max_length = 255, null = True)
     author = models.ForeignKey(User, on_delete= models.CASCADE, null = True)
     writer =  models.CharField(max_length = 255, null = True)
+    image = models.ImageField(null= True, blank = True)
 
     class Meta:
         abstract = True

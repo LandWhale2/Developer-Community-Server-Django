@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'posts',
     'users',
-    'storages'
 ]
 
 MIDDLEWARE = [
@@ -145,18 +144,7 @@ SERVER_EMAIL = 'hostlandwhale@gmail.com'
 DEFAULT_FROM_MAIL = 'hostlandwhale'
 
 
+#image 파일 관리
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# # S3 Storage
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# # AWS Access
-# AWS_ACCESS_KEY_ID = 'AKIATAKXX3QHR62OKAA5'
-# AWS_SECRET_ACCESS_KEY = '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'
-# AWS_STORAGE_BUCKET_NAME = 'developercommunityapp'
-
-# #static
-# STATIC_DIR = os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = [
-#     STATIC_DIR,
-# ]
