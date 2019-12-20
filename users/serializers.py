@@ -60,7 +60,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         message = render_to_string('user/account_activate_email.html', {
             'user': user,
-            'domain' : 'ec2-15-164-226-55.ap-northeast-2.compute.amazonaws.com:8000',
+            'domain' : 'ec2-15-164-211-101.ap-northeast-2.compute.amazonaws.com:8000',
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': account_activation_token.make_token(user)
         })
