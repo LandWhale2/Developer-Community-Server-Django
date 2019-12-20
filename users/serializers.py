@@ -81,3 +81,16 @@ class LoginSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
         
+
+
+class emailcheck(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('email',)
+    
+    def validate_email(self, value):
+        #이메일이 데이터베이스에 존재하는지 확인함
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("이메일이 이미 존재합니다")
+        return value

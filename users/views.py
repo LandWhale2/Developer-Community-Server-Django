@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializers import UserSerializer, LoginSerializer
+from .serializers import UserSerializer, LoginSerializer, emailcheck
 from django.http import HttpResponse
 from rest_framework import status, permissions
 from rest_framework.permissions import AllowAny
@@ -12,6 +12,7 @@ from .tokens import account_activation_token
 from .models import User
 import traceback
 from rest_framework import viewsets
+import re
 
 # Create your views here.
 
@@ -67,3 +68,19 @@ class UserActivate(APIView):
 
         except Exception as e:
             print(traceback.format_exc())
+
+
+class EmailCheckView(APIView):
+    permission_classes = (AllowAny,)
+    
+    def post(self, request):
+        serializer = emailcheck(data=request.data)
+
+        email = request.data.get('email', None)
+        if serializer.is_valid():
+            p = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+            if p.match(email) is None:
+                return Response('올바른 이메일 형식이 아닙니다', status=status.HTTP_400_BAD_REQUEST)
+            return Response('사용가능한 이메일입니다', status=status.HTTP_200_OK)
+        
+        return Response('이미 존재하는 이메일 입니다', status=status.HTTP_400_BAD_REQUEST)
