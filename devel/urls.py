@@ -29,4 +29,5 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     path('auth/', include('users.urls')),
     path('', views.index),
+    path('like', views.like),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

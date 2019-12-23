@@ -10,26 +10,37 @@ from users.models import User
 class Posts(models.Model):
     created = models.DateTimeField(auto_now_add= True)
     content = models.CharField(max_length = 255, null = True)
-    author = models.ForeignKey(User, on_delete= models.CASCADE, null = True)
     writer =  models.CharField(max_length = 255, null = True)
     image = models.ImageField(null= True, blank = True)
-
+    
     class Meta:
         abstract = True
         ordering = ['-id']
+    
+    @property
+    def total_likes(self):
+        return self.likes.count()
 
 
 class Talk(Posts):
     title = "talk"
+    author = models.ForeignKey(User, on_delete= models.CASCADE, null = True, related_name='talk')
+    likes = models.ManyToManyField(User, blank=True, related_name='talk_likes')
 
 class Projects(Posts):
     title = "projects"
+    author = models.ForeignKey(User, on_delete= models.CASCADE, null = True, related_name='projects')
+    likes = models.ManyToManyField(User, blank=True, related_name='project_likes')
 
 class Algorithm(Posts):
-    title = "Algorithm"
+    title = "algorithm"
+    author = models.ForeignKey(User, on_delete= models.CASCADE, null = True, related_name='algorithm')
+    likes = models.ManyToManyField(User, blank=True, related_name='algorithm_likes')
 
 class Skilltalk(Posts):
-    title = "Skilltalk"
+    title = "skilltalk"
+    author = models.ForeignKey(User, on_delete= models.CASCADE, null = True, related_name='skilltalk')
+    likes = models.ManyToManyField(User, blank=True, related_name='skill_likes')
 
 
 #댓글 모델

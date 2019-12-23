@@ -1,7 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+try:
+    from django.utils import simplejson as json
+except ImportError:
+    import json
 from . import models
 from . import serializers
 from rest_framework import viewsets
+from django.views.decorators.http import require_POST
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+from posts.models import Talk, Projects, Algorithm, Skilltalk
 
 # Create your views here.
 
@@ -45,3 +54,44 @@ class AlgorithmCommentViewset(viewsets.ModelViewSet):
 class SkilltalkCommentViewset(viewsets.ModelViewSet):
     queryset = models.SkilltalkComment.objects.all()
     serializer_class = serializers.SkilltalkCommentSerializer
+
+
+@require_POST
+@csrf_exempt
+def like(request):
+    if request.method == 'POST':
+        print(request.body)
+        ds = json.loads(request.body)
+        title= ds['title']
+        user = ds['userid']
+        postid = ds['postid']
+
+        post = Talk
+        
+        if title == 'talk':
+            post = Talk.objects.get(id= postid)
+        elif title == 'algorithm':
+            post = Algorithm.objects.get(id= postid)
+        elif title == 'projects':
+            post = Projects.objects.get(id= postid)
+        elif title == 'skilltalk':
+            post = Skilltalk.objects.get(id= postid)
+        else:
+            raise Exception("올바른 주제 입력이 아닙니다")
+        
+        
+        if post.likes.filter(id = user).exists():
+            post.likes.remove(user)
+            message = "좋아요가 취소되었습니다"
+        else:
+            post.likes.add(user)
+            message = "이글을 좋아합니다"
+
+        
+    context = {'like_count' : post.total_likes, 'message': message}
+    return HttpResponse(json.dumps(context), content_type='application/json')
+
+
+
+
+

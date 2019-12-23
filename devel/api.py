@@ -14,3 +14,5 @@ router.register(r'projects/(?P<id>\d+)/comment', postview.ProjectCommentViewset)
 router.register(r'algorithm/(?P<id>\d+)/comment', postview.AlgorithmCommentViewset)
 router.register(r'skilltalk/(?P<id>\d+)/comment', postview.SkilltalkCommentViewset)
 # router.register(r'projects', myapp_views.ProjectsViewset)
+
+
