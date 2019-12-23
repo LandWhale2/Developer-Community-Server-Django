@@ -25,22 +25,22 @@ class Posts(models.Model):
 class Talk(Posts):
     title = "talk"
     author = models.ForeignKey(User, on_delete= models.CASCADE, null = True, related_name='talk')
-    likes = models.ManyToManyField(User, blank=True, related_name='talk_likes')
+    likes = models.ManyToManyField(User, blank=True,null= True ,related_name='talk_likes')
 
 class Projects(Posts):
     title = "projects"
     author = models.ForeignKey(User, on_delete= models.CASCADE, null = True, related_name='projects')
-    likes = models.ManyToManyField(User, blank=True, related_name='project_likes')
+    likes = models.ManyToManyField(User, blank=True,null= True, related_name='project_likes')
 
 class Algorithm(Posts):
     title = "algorithm"
     author = models.ForeignKey(User, on_delete= models.CASCADE, null = True, related_name='algorithm')
-    likes = models.ManyToManyField(User, blank=True, related_name='algorithm_likes')
+    likes = models.ManyToManyField(User, blank=True,null= True, related_name='algorithm_likes')
 
 class Skilltalk(Posts):
     title = "skilltalk"
     author = models.ForeignKey(User, on_delete= models.CASCADE, null = True, related_name='skilltalk')
-    likes = models.ManyToManyField(User, blank=True, related_name='skill_likes')
+    likes = models.ManyToManyField(User, blank=True,null= True, related_name='skill_likes')
 
 
 #댓글 모델
