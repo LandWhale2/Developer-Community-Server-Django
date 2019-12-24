@@ -68,7 +68,7 @@ class UserSerializer(serializers.ModelSerializer):
         #이메일 전송 과정
 
         mail_subject = '회원가입 확인메일 입니다.'
-        to_email = 'hostlandwhale@gmail.com'
+        to_email = user.email
         email = EmailMessage(mail_subject, message, to=[to_email])
         email.send()
 

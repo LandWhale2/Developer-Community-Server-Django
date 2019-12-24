@@ -30,7 +30,7 @@ class AlgorithmSerializer(serializers.HyperlinkedModelSerializer):
 
 class SkilltalkSerializer(serializers.HyperlinkedModelSerializer):
     image = serializers.ImageField(use_url = True, required=False)
-    likes = UserSerializer(many=True)
+    likes = UserSerializer(many=True, required=False)
     class Meta:
         model = models.Skilltalk
         fields = ('content','image', 'title', 'created', 'writer', 'id', 'likes')
