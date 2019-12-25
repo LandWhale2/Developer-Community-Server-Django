@@ -105,11 +105,10 @@ def userupdate(request):
 
         if User.objects.filter(token = token).exists():
             user = User.objects.get(token= token)
-            print(user)
             user.nickname = nickname
-            print(user.nickname)
             message = '업데이트완료'
             data = user.nickname
+            user.save()
             context = {'data' : data, 'message': message}
             return HttpResponse(json.dumps(context), content_type='application/json')
         else:
