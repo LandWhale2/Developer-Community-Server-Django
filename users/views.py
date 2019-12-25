@@ -13,6 +13,12 @@ from .models import User
 import traceback
 from rest_framework import viewsets
 import re
+try:
+    from django.utils import simplejson as json
+except ImportError:
+    import json
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -34,7 +40,6 @@ class SignIn(APIView):
         password = request.data.get('password', None)
         if email and password:
             user_obj = User.objects.get(email = email, password= password)
-            print(user_obj)
             if user_obj:
                 user = LoginSerializer(user_obj)
                 data_list = {}
@@ -84,3 +89,35 @@ class EmailCheckView(APIView):
             return Response('사용가능한 이메일입니다', status=status.HTTP_200_OK)
         
         return Response('이미 존재하는 이메일 입니다', status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@require_POST
+@csrf_exempt
+def userupdate(request):
+    if request.method == 'POST':
+        ds = json.loads(request.body)
+        token = ds['token']
+        nickname = ds['nickname']
+
+        
+        
+
+        if User.objects.filter(token = token).exists():
+            user = User.objects.get(token= token)
+            print(user)
+            user.nickname = nickname
+            print(user.nickname)
+            message = '업데이트완료'
+            data = user.nickname
+            context = {'data' : data, 'message': message}
+            return HttpResponse(json.dumps(context), content_type='application/json')
+        else:
+            message = '업데이트 실패'
+            data = user.nickname
+            context = {'data' : data, 'message': message}
+            return HttpResponse(json.dumps(context), content_type='application/json')
+        
+
+        
+    

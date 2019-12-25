@@ -9,6 +9,7 @@ urlpatterns = [
     path('signin', views.SignIn.as_view(), name='signin'),
     path('check', views.EmailCheckView.as_view(), name='check'),
     path('activate/<str:uidb64>/<str:token>', views.UserActivate.as_view(), name="activate"),
+    path('userupdate', views.userupdate, name="userupdate"),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
