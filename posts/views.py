@@ -80,6 +80,8 @@ def like(request):
             raise Exception("올바른 주제 입력이 아닙니다")
         
         
+        
+        
         if post.likes.filter(id = user).exists():
             post.likes.remove(user)
             message = "좋아요가 취소되었습니다"
