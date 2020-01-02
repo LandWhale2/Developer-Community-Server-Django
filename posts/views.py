@@ -60,7 +60,6 @@ class SkilltalkCommentViewset(viewsets.ModelViewSet):
 @csrf_exempt
 def like(request):
     if request.method == 'POST':
-        print(request.body)
         ds = json.loads(request.body)
         title= ds['title']
         user = ds['userid']

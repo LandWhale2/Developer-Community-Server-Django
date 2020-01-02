@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from . import models
-from users.serializers import UserSerializer
+from users.serializers import UserSerializer,AuthorSerializer
 
 #글 게시물serializer
 
@@ -10,7 +10,7 @@ class TalkSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Talk
-        fields = ('content','image', 'title', 'created', 'writer', 'id', 'likes')
+        fields = ('content','image', 'title', 'created', 'writer', 'id', 'likes',)
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):

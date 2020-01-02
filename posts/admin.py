@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Talk, Projects, Algorithm, Skilltalk
+from . import models
 
 # Register your models here.
 
@@ -22,3 +23,7 @@ admin.site.register(Talk, TalkAdmin)
 admin.site.register(Projects, ProjectAdmin)
 admin.site.register(Algorithm, AlgorithmAdmin)
 admin.site.register(Skilltalk, SkilltalkAdmin)
+admin.site.register(models.TalkComment)
+admin.site.register(models.ProjectsComment)
+admin.site.register(models.AlgorithmComment)
+admin.site.register(models.SkilltalkComment)

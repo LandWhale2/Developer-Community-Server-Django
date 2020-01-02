@@ -6,6 +6,7 @@ from rest_framework.permissions import AllowAny
 from django.views import View
 from django.utils.encoding import force_text
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import account_activation_token
@@ -99,13 +100,14 @@ def userupdate(request):
         ds = json.loads(request.body)
         token = ds['token']
         nickname = ds['nickname']
+        skills = ds['skills']
 
-        
-        
+    
 
         if User.objects.filter(token = token).exists():
             user = User.objects.get(token= token)
             user.nickname = nickname
+            user.skills += skills
             message = '업데이트완료'
             data = user.nickname
             user.save()

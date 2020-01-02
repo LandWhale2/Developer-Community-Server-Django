@@ -10,6 +10,11 @@ import datetime
 from django.contrib.auth import authenticate
 
 
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id',)
+
 
 class UserSerializer(serializers.ModelSerializer):
     # created_by = serializers.CharField(max_length=64, required=False)
