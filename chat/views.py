@@ -39,7 +39,9 @@ def message_list(request, sender=None, receiver=None):
     """
     if request.method == 'GET':
         messages = Message.objects.filter(sender_id=sender, receiver_id=receiver)
-        serializer = MessageSerializer(messages, many=True, context={'request': request})
+        messages2 = Message.objects.filter(sender_id=receiver, receiver_id=sender)
+        allmessage = messages | messages2
+        serializer = MessageSerializer(allmessage, many=True, context={'request': request})
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         data = JSONParser().parse(request)
