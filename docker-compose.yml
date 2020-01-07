@@ -3,6 +3,8 @@ version: '3'
 services:
   db:
     image: postgres
+  redis:
+    image: redis
   django:
     build: .
     ports:
@@ -16,6 +18,4 @@ services:
       - .:/code
     depends_on:
       - db
-
-
 
