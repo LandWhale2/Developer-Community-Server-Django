@@ -10,3 +10,10 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ['sender', 'receiver', 'message', 'timestamp']
+
+
+class MeSerial(serializers.ModelSerializer):
+    """For Serializing Message"""
+    class Meta:
+        model = Message
+        fields = ['sender', 'receiver', 'message', 'timestamp']

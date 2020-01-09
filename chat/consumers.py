@@ -1,47 +1,64 @@
-from channels.generic.websocket import WebsocketConsumer
+from channels.generic.websocket import AsyncWebsocketConsumer
+from channels.db import database_sync_to_async
+from chat.models import Message
+from chat.serializers import MeSerial, MessageSerializer
 import json
-from asgiref.sync import async_to_sync
 
-
-class ChatConsumer(WebsocketConsumer):
-    # 웹소켓 연결시 실행
-    def connect(self):
-        #chat/routing.py 에있는 url (r'~~~~~consumers~~~)에서 room_name 을 가져옵니다
+class ChatConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
 
-        #그룹에 join , send 등과 같은 동기적인 함수를 비동기적으로 사용하기 위해서는 async_to_sync 로 감싸줘야한다
-        async_to_sync(self.channel_layer.group_add)(
+        # Join room group
+        await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
         )
-        self.accept()
-        #연결 종료시 실행
-    def disconnect(self, close_code):
-        async_to_sync(self.channel_layer.group_discard)(
+
+
+
+        await self.accept()
+    
+    # @database_sync_to_async
+    # def get_message(self):
+    #     messages = Message.objects.filter(sender_id=1, receiver_id=2)
+    #     messages2 = Message.objects.filter(sender_id=2, receiver_id=1)
+    #     allmessage = messages | messages2
+    #     serializer = MessageSerializer(allmessage, many=True)
+    #     return serializer
+
+
+
+    async def disconnect(self, close_code):
+        # Leave room group
+        await self.channel_layer.group_discard(
             self.room_group_name,
             self.channel_name
         )
-    #websocket 에게 메세지 receive
-    def receive(self, text_data):
+
+    # Receive message from WebSocket
+    async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-        
-        #room group에 메세지 send
-        async_to_sync(self.channel_receive.group_send)(
+        sender = text_data_json['sender']
+
+        # Send message to room group
+        await self.channel_layer.group_send(
             self.room_group_name,
             {
                 'type': 'chat_message',
-                'message' : message
+                'message': message,
+                'sender' : sender
             }
         )
-    
-    #room group 에서 메세지 receive
-    def chat_message(self, event):
+
+    # Receive message from room group
+    async def chat_message(self, event):
         message = event['message']
+        sender = event['sender']
 
-        #WebSocket 에 메세지 전송
-
-        self.send(text_data=json.dumps({
-            'message': message
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'sender' : sender
         }))
