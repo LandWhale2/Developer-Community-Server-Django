@@ -100,16 +100,17 @@ def userupdate(request):
         ds = json.loads(request.body)
         token = ds['token']
         nickname = ds['nickname']
-        skills = ds['skills']
+        tags = ds['tags']
 
     
 
         if User.objects.filter(token = token).exists():
             user = User.objects.get(token= token)
             user.nickname = nickname
-            user.skills += skills
+            user.tags = tags
             message = '업데이트완료'
             data = user.nickname
+            # print(User.objects.filter(tags__contained_by=['flutter', 'dart']))
             user.save()
             context = {'data' : data, 'message': message}
             return HttpResponse(json.dumps(context), content_type='application/json')
