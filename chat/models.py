@@ -35,7 +35,7 @@ class Room(models.Model):
       name = models.TextField()
       label = models.SlugField(unique= True)
 
-      def __unicode__(self):
+      def __str__(self):
             return self.label
 
 
@@ -45,7 +45,7 @@ class RoomMessage(models.Model):
       message = models.TextField()
       timestamp = models.DateTimeField(default = timezone.now, db_index= True)
 
-      def __unicode__(self):
+      def __str__(self):
             return '[{timestamp}] {handle}:{message}'.format(**self.as_dict())
       
       @property
@@ -53,4 +53,4 @@ class RoomMessage(models.Model):
             return self.timestamp.strftime('%b %-d %-I:%M %p')
       
       def as_dict(self):
-            return {'handle': self.handle, 'message': self.message, 'timestamp': self.formatted_timestamp}
+            return {'type': 'chat.message', 'handle': self.handle, 'message': self.message, 'timestamp': self.formatted_timestamp}

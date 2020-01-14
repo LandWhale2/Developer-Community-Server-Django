@@ -10,7 +10,7 @@ import json
 
 log = logging.getLogger(__name__)
 
-class ChatConsumer(AsyncWebsocketConsumer):
+class ChatConsumer(AsyncWebsocketConsumer, Message):
     async def connect(self):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
@@ -26,10 +26,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
             room.save()
 
         print(room)
+        # self.message.reply_channel.send({'accept': True})
         # Join room group
         await self.channel_layer.group_add(
             self.room_group_name,
-            self.channel_name
+            self.channel_name,
+            # self.message.reply_channel
         )
 
         await self.accept()
@@ -42,21 +44,36 @@ class ChatConsumer(AsyncWebsocketConsumer):
         room = Room.objects.get(label = self.room_group_name)
 
         if set(text_data_json.keys())!=set(('handle', 'message')):
-            log.debug('예기치못한 포멧  = %s', text_data_json)
+            log.debug('unexpected f  = %s', text_data_json)
             return
 
         if text_data_json:
             log.debug('chat room : %s handle: %s message %s',
             room.label, text_data_json['handle'],text_data_json['message'])
             m = room.messages.create(**text_data_json)
+            print(m)
 
 
         # Send message to room group
-    
-        await self.channel_layer.group_send(
+        await self.send(text_data=json.dumps(m.as_dict()))
+        # await self.channel_layer.group_send(
+        #     self.room_group_name,
+        #     {
+        #         'type': 'websocket.message',
+        #         'text':json.dumps(m.as_dict())
+        #     }
+        # )
+        # await self.send(text_data="Hello world!")
+
+        
+    async def disconnect(self, close_code):
+        # Leave room group
+        await self.channel_layer.group_discard(
             self.room_group_name,
-            {'text':json.dumps(m.as_dict())}
+            self.channel_name
         )
+
+    
 
     # @database_sync_to_async
     # def getmessage(self):
