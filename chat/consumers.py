@@ -138,6 +138,7 @@ class ChatConsumer(WebsocketConsumer):
         room = Room.objects.get(label = self.room_group_name)
         if room:
             m = room.messages.create(**text_data_json)
+            print(m)
             print(text_data_json)
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
@@ -154,6 +155,8 @@ class ChatConsumer(WebsocketConsumer):
         message = event['message']
         handle = event['handle']
         # timestamp = event['timestamp']
+        allmessage = RoomMessage.objects.filter(label = self.room_group_name)
+        print(allmessage)
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({

@@ -41,6 +41,7 @@ class Room(models.Model):
 
 class RoomMessage(models.Model):
       room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='messages')
+      label = models.CharField(max_length = 50, null = True)
       handle = models.TextField()
       message = models.TextField()
       timestamp = models.DateTimeField(default = timezone.now, db_index= True)
