@@ -5,3 +5,4 @@ from . import models
 
 admin.site.register(models.Room)
 admin.site.register(models.RoomMessage) 
+admin.site.register(models.Message) 

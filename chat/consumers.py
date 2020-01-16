@@ -100,7 +100,7 @@
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 import json
-from chat.models import RoomMessage, Room
+from chat.models import RoomMessage, Room, Message
 from django.utils import timezone
 
 class ChatConsumer(WebsocketConsumer):
@@ -108,12 +108,12 @@ class ChatConsumer(WebsocketConsumer):
         self.room_name = self.scope['url_route']['kwargs']['room_name']
         self.room_group_name = 'chat_%s' % self.room_name
 
-        try:
-            room = Room.objects.get(label = self.room_group_name)
-        except Room.DoesNotExist:
-            print('DoesNotExist')
-            room = Room(label = self.room_group_name)
-            room.save()
+        # try:
+        #     room = Room.objects.get(label = self.room_group_name)
+        # except Room.DoesNotExist:
+        #     print('DoesNotExist')
+        #     room = Room(label = self.room_group_name)
+        #     room.save()
         
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
@@ -134,33 +134,37 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-        handle = text_data_json['handle']
-        room = Room.objects.get(label = self.room_group_name)
-        if room:
-            m = room.messages.create(**text_data_json)
-            print(m)
-            print(text_data_json)
+        sender = text_data_json['sender']
+        receiver = text_data_json['receiver']
+        # room = Room.objects.get(label = self.room_group_name)
+        # if room:
+        #     m = room.messages.create(**text_data_json)
         # Send message to room group
+        m = Message(message=message, sender_id=sender, receiver_id=receiver)
+        m.save()
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'chat_message',
                 'message': message,
-                'handle': handle,
+                'sender': sender,
+                'receiver':receiver,
             }
         )
 
     # Receive message from room group
     def chat_message(self, event):
         message = event['message']
-        handle = event['handle']
+        sender = event['sender']
+        receiver = event['receiver']
         # timestamp = event['timestamp']
-        allmessage = RoomMessage.objects.filter(label = self.room_group_name)
-        print(allmessage)
+        # allmessage = RoomMessage.objects.filter(label = self.room_group_name)
+        # print(allmessage)
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
             'message': message,
-            'handle': handle,
+            'sender': sender,
+            'receiver':receiver,
             # 'timestamp': timestamp,
         }))
