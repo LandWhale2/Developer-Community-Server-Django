@@ -15,7 +15,7 @@ from posts.models import Talk, Projects, Algorithm, Skilltalk
 
 # Create your views here.
 
-#글 뷰셋
+#글 ViewSet
 class TalkViewset(viewsets.ModelViewSet):
     queryset = models.Talk.objects.all()
     serializer_class = serializers.TalkSerializer
@@ -32,13 +32,13 @@ class SkilltalkViewset(viewsets.ModelViewSet):
     queryset = models.Skilltalk.objects.all()
     serializer_class = serializers.SkilltalkSerializer
 
-#홈
+#Home
 
 def index(request):
     return render(request, 'index.html')
 
 
-#댓글 뷰셋
+#댓글 ViewSet
 
 class TalkCommentViewset(viewsets.ModelViewSet):
     queryset = models.TalkComment.objects.all()
@@ -110,7 +110,6 @@ def like(request):
 
     context = {'like_count' : post.total_likes, 'message': message}
     return HttpResponse(json.dumps(context), content_type='application/json')
-
 
 
 

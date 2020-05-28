@@ -4,7 +4,7 @@ from chat.models import Message
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    """For Serializing Message"""
+    
     sender = serializers.SlugRelatedField(many=False, slug_field='nickname', queryset=User.objects.all())
     receiver = serializers.SlugRelatedField(many=False, slug_field='nickname', queryset=User.objects.all())
     class Meta:
@@ -12,8 +12,3 @@ class MessageSerializer(serializers.ModelSerializer):
         fields = ['sender', 'receiver', 'message', 'timestamp']
 
 
-class MeSerial(serializers.ModelSerializer):
-    """For Serializing Message"""
-    class Meta:
-        model = Message
-        fields = ['sender', 'receiver', 'message', 'timestamp']

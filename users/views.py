@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializers import UserSerializer, LoginSerializer, emailcheck
+from .serializers import UserSerializer, emailcheck
 from django.http import HttpResponse
 from rest_framework import status, permissions
 from rest_framework.permissions import AllowAny
@@ -42,9 +42,9 @@ class SignIn(APIView):
         if email and password:
             user_obj = User.objects.get(email = email, password= password)
             if user_obj:
-                user = LoginSerializer(user_obj)
+                user = UserSerializer().to_representation(user_obj)
                 data_list = {}
-                data_list.update(user.data)
+                data_list.update(user)
                 return Response({"message": "로그인 성공", "data": data_list, "code": 200})
             else:
                 message = "로그인 실패"
@@ -110,7 +110,6 @@ def userupdate(request):
             user.tags = tags
             message = '업데이트완료'
             data = user.nickname
-            # print(User.objects.filter(tags__contained_by=['flutter', 'dart']))
             user.save()
             context = {'data' : data, 'message': message}
             return HttpResponse(json.dumps(context), content_type='application/json')

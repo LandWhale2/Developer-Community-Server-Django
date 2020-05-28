@@ -17,8 +17,6 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    # created_by = serializers.CharField(max_length=64, required=False)
-    # updated_by = serializers.CharField(max_length=64, required=False)
     email = serializers.EmailField()
 
     class Meta:
@@ -28,9 +26,6 @@ class UserSerializer(serializers.ModelSerializer):
     def to_internal_value(self, data):
         #POST/PUT 과 같이 데이터변경이있을떄 데이터 저장하기 전에 핸들링 가능한 함수
         ret = super(UserSerializer, self).to_internal_value(data)
-
-        # cipher = AESSipher()
-        # ret['password'] = cipher.encrypt_str(ret['password'])
 
         return ret
     
@@ -65,7 +60,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         message = render_to_string('user/account_activate_email.html', {
             'user': user,
-            'domain' : 'ec2-15-164-211-101.ap-northeast-2.compute.amazonaws.com:8000',
+            'domain' : 'localhost:8000',
             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
             'token': account_activation_token.make_token(user)
         })
@@ -76,15 +71,11 @@ class UserSerializer(serializers.ModelSerializer):
         to_email = user.email
         email = EmailMessage(mail_subject, message, to=[to_email])
         email.send()
-
         return validate_data
 
 
 
-class LoginSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
+
         
 
 

@@ -15,5 +15,4 @@ class User(models.Model):
     active = models.BooleanField(default=False)
     token = models.CharField(max_length= 255, null = True)
     nickname = models.CharField(max_length = 255, null = True)
-    # skills = models.CharField(max_length = 255, null = True)
     tags = ArrayField(models.CharField(max_length=200), blank=True, null=True)
