@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from posts.models import Talk, Projects, Algorithm, Skilltalk
+from rest_framework import permissions
 
 # Create your views here.
 

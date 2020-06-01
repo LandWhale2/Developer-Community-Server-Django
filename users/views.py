@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializers import UserSerializer, emailcheck
+from .serializers import UserSerializer, EmailSerializer
 from django.http import HttpResponse
 from rest_framework import status, permissions
 from rest_framework.permissions import AllowAny
@@ -20,7 +20,7 @@ except ImportError:
     import json
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
-
+from django.http import Http404
 # Create your views here.
 
 
@@ -74,50 +74,35 @@ class UserActivate(APIView):
 
         except Exception as e:
             print(traceback.format_exc())
+            return Response('잘못된 접근입니다.', status=status.HTTP_400_BAD_REQUEST)
 
 
 class EmailCheckView(APIView):
     permission_classes = (AllowAny,)
     
     def post(self, request):
-        serializer = emailcheck(data=request.data)
-
-        email = request.data.get('email', None)
-        if serializer.is_valid():
-            p = re.compile('^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
-            if p.match(email) is None:
-                return Response('올바른 이메일 형식이 아닙니다', status=status.HTTP_400_BAD_REQUEST)
-            return Response('사용가능한 이메일입니다', status=status.HTTP_200_OK)
-        
-        return Response('이미 존재하는 이메일 입니다', status=status.HTTP_400_BAD_REQUEST)
+        serializer = EmailSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        return Response('사용가능한 이메일입니다', status=status.HTTP_200_OK)
 
 
 
-@require_POST
-@csrf_exempt
-def userupdate(request):
-    if request.method == 'POST':
-        ds = json.loads(request.body)
-        token = ds['token']
-        nickname = ds['nickname']
-        tags = ds['tags']
+class UserDetail(APIView):
 
-    
+    def get_object_user(self, token):
+        try:
+            return User.objects.get(token=token)
+        except User.DoesNotExist:
+            raise Http404
 
-        if User.objects.filter(token = token).exists():
-            user = User.objects.get(token= token)
-            user.nickname = nickname
-            user.tags = tags
-            message = '업데이트완료'
-            data = user.nickname
-            user.save()
-            context = {'data' : data, 'message': message}
-            return HttpResponse(json.dumps(context), content_type='application/json')
-        else:
-            message = '업데이트 실패'
-            data = user.nickname
-            context = {'data' : data, 'message': message}
-            return HttpResponse(json.dumps(context), content_type='application/json')
+    def patch(self, request):
+        token = request.data.get("token", None)
+        user = self.get_object_user(token)
+        serializer = UserSerializer(user, data=request.data, partial=True)
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
         
 
         

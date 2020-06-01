@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from . import models
-from users.serializers import UserSerializer,AuthorSerializer
+from users.serializers import UserSerializer
 
 #글 게시물serializer
 

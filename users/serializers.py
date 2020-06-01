@@ -71,6 +71,7 @@ class UserSerializer(serializers.ModelSerializer):
         to_email = user.email
         email = EmailMessage(mail_subject, message, to=[to_email])
         email.send()
+        
         return validate_data
 
 
@@ -79,7 +80,7 @@ class UserSerializer(serializers.ModelSerializer):
         
 
 
-class emailcheck(serializers.ModelSerializer):
+class EmailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
