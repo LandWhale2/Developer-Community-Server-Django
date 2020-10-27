@@ -10,7 +10,7 @@ idna==2.8
 incremental==17.5.0
 hyperlink==19.0.0
 daphne==2.4.1
-cryptography==2.8
+cryptography==3.2
 constantly==15.1.0
 channels==2.4.0
 cffi==1.13.2
