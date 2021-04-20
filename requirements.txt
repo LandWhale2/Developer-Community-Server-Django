@@ -14,7 +14,7 @@ cryptography==2.8
 constantly==15.1.0
 channels==2.4.0
 cffi==1.13.2
-autobahn==19.11.1
+autobahn==20.12.3
 attrs==19.3.0
 PyHamcrest==1.9.0
 Automat==0.8.0
