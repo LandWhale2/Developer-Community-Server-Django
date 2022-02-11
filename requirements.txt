@@ -1,6 +1,6 @@
 zope.interface==4.7.1
 txaio==18.8.1
-Twisted==19.10.0
+Twisted==22.1.0
 service-identity==18.1.0
 pyOpenSSL==19.1.0
 pyasn1==0.4.8
